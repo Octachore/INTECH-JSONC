@@ -266,7 +266,7 @@ namespace Tests
                         new object[] {1, TestCase1.Json, TestCase1.Tree},
                         new object[] {2, TestCase2.Json, TestCase2.Tree},
                         new object[] {3, TestCase3.Json, TestCase3.Tree},
-                        new object[] {10000, TestCase10000.Json, TestCase10000.Tree}
+                        new object[] {10000, TestCase4.Json, TestCase4.Tree}
                     };
 
                     private static class TestCase1
@@ -328,7 +328,7 @@ namespace Tests
                         }
                     }
 
-                    private static class TestCase10000
+                    private static class TestCase4
                     {
                         public const string Json = @"{
                                                         //Comment 1
@@ -365,7 +365,7 @@ namespace Tests
                                 var propertyE = new AssignmentNode("e", new ValueNode<string>("Hello World"));
 
                                 var objectC = new ObjectNode(propertyD, propertyE);
-                                objectC.Comments.Add("Comment 4");
+                                objectC.Comments.Add(" Comment 4");
 
                                 var propertyC = new AssignmentNode("c", objectC);
                                 propertyC.Comments.Add("Comment 2");
