@@ -16,15 +16,25 @@ namespace Core.Lexicon
 
         public bool IsEnd => _pos >= _input.Length;
 
+        public bool IsMultilineComment => Peek() == '/' && Peek(1) == '*';
+
         public bool IsNumber => char.IsNumber(Peek());
+
+        public bool IsOneLineComment => Peek() == '/' && Peek(1) == '/';
 
         public bool IsWhiteSpace => char.IsWhiteSpace(Peek());
 
         public bool IsWord => char.IsLetter(Peek());
 
+        public bool IsEndOfLine => Peek() == '\r' || Peek() == '\n';
+
+        public bool IsEndOfMultilineComment => Peek() == '*' && Peek(1) == '/';
+
         public char Consume() => _input[_pos++];
 
-        public char Peek() => _input[_pos];
+        public char Peek() => Peek(0);
+
+        public char Peek(int offset) => _input[_pos + offset];
 
         internal AbstractToken GetNextToken()
         {
@@ -72,10 +82,40 @@ namespace Core.Lexicon
                 default:
                     if (IsNumber) return CurrentToken = Number();
                     else if (IsWord) return CurrentToken = Word();
+                    else if (IsOneLineComment) return CurrentToken = OneLineComment();
+                    else if (IsMultilineComment) return CurrentToken = MultilineComment();
                     throw new UnknownTokenException(c);
             }
             Consume();
             return CurrentToken;
+        }
+
+        private AbstractToken MultilineComment()
+        {
+            Consume();
+            Consume();
+            var builder = new StringBuilder();
+            do
+            {
+                builder.Append(Peek());
+                Consume();
+            } while (!IsEnd && !IsEndOfMultilineComment);
+            Consume();
+            Consume();
+            return new Token<string>(TokenType.MultilineComment, builder.ToString());
+        }
+
+        private AbstractToken OneLineComment()
+        {
+            Consume();
+            Consume();
+            var builder = new StringBuilder();
+            do
+            {
+                builder.Append(Peek());
+                Consume();
+            } while (!IsEnd && !IsEndOfLine);
+            return new Token<string>(TokenType.OneLineComment, builder.ToString());
         }
 
         private void HandleWhiteSpaces()

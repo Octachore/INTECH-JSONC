@@ -32,7 +32,7 @@ namespace Tests
                             new Token<string>(TokenType.ClosingSquareBracket, "]"),
                             new Token<string>(TokenType.Colon, ":"),
                             new Token<string>(TokenType.ClosingParenthesis, ")"),
-                            new Token<string>(TokenType.OpeningParenthesis, "("),
+                            new Token<string>(TokenType.OpeningParenthesis, "(")
                         };
                     }
 
@@ -129,10 +129,32 @@ namespace Tests
                         };
                     }
 
+                    private static class TestCase3
+                    {
+                        public const string Json = @"test //hello world!
+                                                     {
+                                                        /* This block is empty.
+                                                            Really.
+                                                          Except for that comment.*/
+                                                     }";
+
+                        public static readonly IReadOnlyList<AbstractToken> Tokens = new List<AbstractToken>
+                        {
+                            new Token<string>(TokenType.Word, "test"),
+                            new Token<string>(TokenType.OneLineComment, "hello world!"),
+                            new Token<string>(TokenType.OpeningCurlyBracket, "{"),
+                            new Token<string>(TokenType.MultilineComment, @" This block is empty.
+                                                            Really.
+                                                          Except for that comment."),
+                            new Token<string>(TokenType.ClosingCurlyBracket, "}")
+                        };
+                    }
+
                     public static object[] Data => new object[]
                     {
                         new object[] {TestCase1.Json, TestCase1.Tokens},
-                        new object[] {TestCase2.Json, TestCase2.Tokens}
+                        new object[] {TestCase2.Json, TestCase2.Tokens},
+                        new object[] {TestCase3.Json, TestCase3.Tokens}
                     };
                 }
 

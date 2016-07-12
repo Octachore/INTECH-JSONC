@@ -12,6 +12,8 @@
         Coma,
         DoubleQuotes,
         Word,
-        Number
+        Number,
+        OneLineComment,
+        MultilineComment
     }
 }
