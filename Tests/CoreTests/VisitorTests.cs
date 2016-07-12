@@ -7,7 +7,7 @@ namespace Tests.CoreTests
     internal class VisitorTests
     {
         [TestCaseSource(typeof(TestsData.Core.Visitor.JsonVisitor), "Data")]
-        public void DebugVisitor(ObjectNode tree, string expectedResult)
+        public void JsonVisitor(ObjectNode tree, string expectedResult)
         {
             var visitor = new JsonVisitor();
 

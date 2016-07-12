@@ -5,7 +5,7 @@ namespace Core.Exceptions
 {
     internal class InvalidSyntaxException : Exception
     {
-        string _message;
+        private string _message;
         public override string Message => _message;
 
         public TokenType[] ExpectedTypes { get; set; }

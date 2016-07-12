@@ -109,12 +109,16 @@ namespace Core.Parsing
                 //case TokenType.Word:
                 case TokenType.DoubleQuotes:
                     return ParseString();
+
                 case TokenType.Number:
                     return new ValueNode<int>(int.Parse(_lexer.CurrentToken.Value));
+
                 case TokenType.OpeningCurlyBracket:
                     return ParseObject();
+
                 case TokenType.OpeningSquareBracket:
                     return ParseList();
+
                 default:
                     throw new InvalidSyntaxException(_lexer.CurrentToken?.Type, TokenType.DoubleQuotes, TokenType.Number, TokenType.OpeningCurlyBracket, TokenType.OpeningSquareBracket);
             }

@@ -15,7 +15,7 @@ namespace Core.Nodes
             Value = value;
         }
 
-        public AssignmentNode()
+        public AssignmentNode() : this(null, null)
         {
         }
 

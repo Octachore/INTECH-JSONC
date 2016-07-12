@@ -1,5 +1,0 @@
-﻿block :				{ content }
-content :			(block | array | property) (',' (block | array | property))*
-array :				[ content ]
-property :			WORD : (value | block | array)
-value :				"WORD" | INTEGER

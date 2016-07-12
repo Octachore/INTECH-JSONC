@@ -63,33 +63,43 @@ namespace Core.Lexicon
                 case '(':
                     CurrentToken = new Token(TokenType.OpeningParenthesis, "(");
                     break;
+
                 case ')':
                     CurrentToken = new Token(TokenType.ClosingParenthesis, ")");
                     break;
+
                 case '[':
                     CurrentToken = new Token(TokenType.OpeningSquareBracket, "[");
                     break;
+
                 case ']':
                     CurrentToken = new Token(TokenType.ClosingSquareBracket, "]");
                     break;
+
                 case '{':
                     CurrentToken = new Token(TokenType.OpeningCurlyBracket, "{");
                     break;
+
                 case '}':
                     CurrentToken = new Token(TokenType.ClosingCurlyBracket, "}");
                     break;
+
                 case ':':
                     CurrentToken = new Token(TokenType.Colon, ":");
                     break;
+
                 case ',':
                     CurrentToken = new Token(TokenType.Coma, ",");
                     break;
+
                 case '"':
                     CurrentToken = new Token(TokenType.DoubleQuotes, "\"");
                     break;
+
                 case '=':
                     CurrentToken = new Token(TokenType.Equals, "=");
                     break;
+
                 default:
                     if (IsNumber) return CurrentToken = Number();
                     else if (IsWord) return CurrentToken = Word();
@@ -147,6 +157,7 @@ namespace Core.Lexicon
             } while (!IsEnd && !IsEndOfLine);
             return new Token(TokenType.OneLineComment, builder.ToString());
         }
+
         private Token Word()
         {
             var builder = new StringBuilder();

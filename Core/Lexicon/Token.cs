@@ -10,7 +10,6 @@
 
         public Token(TokenType type, int value) : this(type, value.ToString())
         {
-
         }
 
         public string Value { get; set; }

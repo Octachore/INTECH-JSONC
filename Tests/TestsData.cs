@@ -47,6 +47,7 @@ namespace Tests
                     private static class TestCase1
                     {
                         public const string Json = "{{{10,test,[1,2,3]:)(=";
+
                         public static readonly IReadOnlyList<Token> Tokens = new List<Token>
                         {
                             new Token(TokenType.OpeningCurlyBracket, "{"),
@@ -234,7 +235,6 @@ namespace Tests
                         {
                             get
                             {
-
                                 var propertyA = new AssignmentNode("a", new ValueNode<int>(1));
 
                                 var listB = new ListNode();
@@ -250,7 +250,6 @@ namespace Tests
                                 var objectC = new ObjectNode(propertyD, propertyE);
 
                                 var propertyC = new AssignmentNode("c", objectC);
-
 
                                 var root = new ObjectNode(propertyA, propertyB, propertyC);
                                 return root;
@@ -277,7 +276,6 @@ namespace Tests
                         {
                             get
                             {
-
                                 var propertyA = new AssignmentNode("a", new ValueNode<int>(1));
                                 propertyA.Comments.Add(" Comment ");
 
@@ -298,7 +296,6 @@ namespace Tests
                         {
                             get
                             {
-
                                 var propertyA = new AssignmentNode("a", new ValueNode<int>(1));
                                 propertyA.Comments.Add(" Comment");
 
@@ -318,7 +315,6 @@ namespace Tests
                         {
                             get
                             {
-
                                 var propertyA = new AssignmentNode("a", new ValueNode<int>(1));
 
                                 var root = new ObjectNode(propertyA);
@@ -347,7 +343,6 @@ namespace Tests
                         {
                             get
                             {
-
                                 var propertyA = new AssignmentNode("a", new ValueNode<int>(1));
                                 propertyA.Comments.Add("Comment 1");
 
