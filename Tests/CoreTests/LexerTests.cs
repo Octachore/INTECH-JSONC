@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Core.Exceptions;
 using Core.Lexicon;
 using NUnit.Framework;
 
@@ -8,11 +9,11 @@ namespace Tests.CoreTests
     internal class LexerTests
     {
         [TestCaseSource(typeof(TestsData.Core.Lexer.TokenProduction), "Data")]
-        public void Lexer_can_produce_tokens(string input, IList<AbstractToken> expectedTokens)
+        public void Lexer_can_produce_tokens(string input, IList<Token> expectedTokens)
         {
             var lexer = new Lexer(input);
 
-            var tokens = new List<AbstractToken>();
+            var tokens = new List<Token>();
             while (lexer.GetNextToken() != null)
             {
                 tokens.Add(lexer.CurrentToken);

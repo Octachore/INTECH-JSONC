@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System.Linq;
+using System.Text;
+using Core.Exceptions;
 
 namespace Core.Lexicon
 {
@@ -12,9 +14,14 @@ namespace Core.Lexicon
             _input = input;
         }
 
-        public AbstractToken CurrentToken { get; internal set; }
+        public Token CurrentToken { get; internal set; }
 
+        public bool IsComment => CurrentToken.Type == TokenType.OneLineComment || CurrentToken.Type == TokenType.MultilineComment;
         public bool IsEnd => _pos >= _input.Length;
+
+        public bool IsEndOfLine => Peek() == '\r' || Peek() == '\n';
+
+        public bool IsEndOfMultilineComment => Peek() == '*' && Peek(1) == '/';
 
         public bool IsMultilineComment => Peek() == '/' && Peek(1) == '*';
 
@@ -26,17 +33,18 @@ namespace Core.Lexicon
 
         public bool IsWord => char.IsLetter(Peek());
 
-        public bool IsEndOfLine => Peek() == '\r' || Peek() == '\n';
-
-        public bool IsEndOfMultilineComment => Peek() == '*' && Peek(1) == '/';
-
         public char Consume() => _input[_pos++];
 
         public char Peek() => Peek(0);
 
         public char Peek(int offset) => _input[_pos + offset];
 
-        internal AbstractToken GetNextToken()
+        internal void Expect(params TokenType[] expectedTypes)
+        {
+            if (!expectedTypes.Contains(CurrentToken.Type)) throw new InvalidSyntaxException(CurrentToken?.Type, expectedTypes);
+        }
+
+        internal Token GetNextToken()
         {
             while (IsEnd || IsWhiteSpace)
             {
@@ -47,37 +55,40 @@ namespace Core.Lexicon
             return DetermineToken();
         }
 
-        private AbstractToken DetermineToken()
+        private Token DetermineToken()
         {
             char c = Peek();
             switch (c)
             {
                 case '(':
-                    CurrentToken = new Token<string>(TokenType.OpeningParenthesis, "(");
+                    CurrentToken = new Token(TokenType.OpeningParenthesis, "(");
                     break;
                 case ')':
-                    CurrentToken = new Token<string>(TokenType.ClosingParenthesis, ")");
+                    CurrentToken = new Token(TokenType.ClosingParenthesis, ")");
                     break;
                 case '[':
-                    CurrentToken = new Token<string>(TokenType.OpeningSquareBracket, "[");
+                    CurrentToken = new Token(TokenType.OpeningSquareBracket, "[");
                     break;
                 case ']':
-                    CurrentToken = new Token<string>(TokenType.ClosingSquareBracket, "]");
+                    CurrentToken = new Token(TokenType.ClosingSquareBracket, "]");
                     break;
                 case '{':
-                    CurrentToken = new Token<string>(TokenType.OpeningCurlyBracket, "{");
+                    CurrentToken = new Token(TokenType.OpeningCurlyBracket, "{");
                     break;
                 case '}':
-                    CurrentToken = new Token<string>(TokenType.ClosingCurlyBracket, "}");
+                    CurrentToken = new Token(TokenType.ClosingCurlyBracket, "}");
                     break;
                 case ':':
-                    CurrentToken = new Token<string>(TokenType.Colon, ":");
+                    CurrentToken = new Token(TokenType.Colon, ":");
                     break;
                 case ',':
-                    CurrentToken = new Token<string>(TokenType.Coma, ",");
+                    CurrentToken = new Token(TokenType.Coma, ",");
                     break;
                 case '"':
-                    CurrentToken = new Token<string>(TokenType.DoubleQuotes, "\"");
+                    CurrentToken = new Token(TokenType.DoubleQuotes, "\"");
+                    break;
+                case '=':
+                    CurrentToken = new Token(TokenType.Equals, "=");
                     break;
                 default:
                     if (IsNumber) return CurrentToken = Number();
@@ -90,7 +101,15 @@ namespace Core.Lexicon
             return CurrentToken;
         }
 
-        private AbstractToken MultilineComment()
+        private void HandleWhiteSpaces()
+        {
+            do
+            {
+                Consume();
+            } while (!IsEnd && IsWhiteSpace);
+        }
+
+        private Token MultilineComment()
         {
             Consume();
             Consume();
@@ -102,10 +121,21 @@ namespace Core.Lexicon
             } while (!IsEnd && !IsEndOfMultilineComment);
             Consume();
             Consume();
-            return new Token<string>(TokenType.MultilineComment, builder.ToString());
+            return new Token(TokenType.MultilineComment, builder.ToString());
         }
 
-        private AbstractToken OneLineComment()
+        private Token Number()
+        {
+            var builder = new StringBuilder();
+            do
+            {
+                builder.Append(Peek());
+                Consume();
+            } while (!IsEnd && IsNumber);
+            return new Token(TokenType.Number, builder.ToString());
+        }
+
+        private Token OneLineComment()
         {
             Consume();
             Consume();
@@ -115,29 +145,9 @@ namespace Core.Lexicon
                 builder.Append(Peek());
                 Consume();
             } while (!IsEnd && !IsEndOfLine);
-            return new Token<string>(TokenType.OneLineComment, builder.ToString());
+            return new Token(TokenType.OneLineComment, builder.ToString());
         }
-
-        private void HandleWhiteSpaces()
-        {
-            do
-            {
-                Consume();
-            } while (!IsEnd && IsWhiteSpace);
-        }
-
-        private AbstractToken Number()
-        {
-            var builder = new StringBuilder();
-            do
-            {
-                builder.Append(Peek());
-                Consume();
-            } while (!IsEnd && IsNumber);
-            return new Token<int>(TokenType.Number, int.Parse(builder.ToString()));
-        }
-
-        private AbstractToken Word()
+        private Token Word()
         {
             var builder = new StringBuilder();
             do
@@ -145,7 +155,7 @@ namespace Core.Lexicon
                 builder.Append(Peek());
                 Consume();
             } while (!IsEnd && IsWord);
-            return new Token<string>(TokenType.Word, builder.ToString());
+            return new Token(TokenType.Word, builder.ToString());
         }
     }
 }

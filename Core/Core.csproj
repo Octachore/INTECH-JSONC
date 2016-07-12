@@ -40,12 +40,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Lexicon\AbstractToken.cs" />
     <Compile Include="Lexicon\Lexer.cs" />
-    <Compile Include="Lexicon\UnknownTokenException.cs" />
+    <Compile Include="Exceptions\UnknownTokenException.cs" />
     <Compile Include="Lexicon\Token.cs" />
     <Compile Include="Lexicon\TokenType.cs" />
+    <Compile Include="Nodes\AssignmentNode.cs" />
+    <Compile Include="Nodes\ListNode.cs" />
+    <Compile Include="Nodes\ObjectNode.cs" />
+    <Compile Include="Nodes\ValueNode.cs" />
+    <Compile Include="Exceptions\InvalidSyntaxException.cs" />
+    <Compile Include="Nodes\Node.cs" />
+    <Compile Include="Parsing\Parser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Visitors\IVisitor.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Utils\Utils.csproj">
@@ -56,6 +63,7 @@
   <ItemGroup>
     <Content Include="Grammar.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -2,18 +2,19 @@
 {
     internal enum TokenType
     {
-        OpeningCurlyBracket,
         ClosingCurlyBracket,
-        OpeningSquareBracket,
-        ClosingSquareBracket,
-        OpeningParenthesis,
         ClosingParenthesis,
+        ClosingSquareBracket,
         Colon,
         Coma,
         DoubleQuotes,
-        Word,
+        Equals,
+        MultilineComment,
         Number,
         OneLineComment,
-        MultilineComment
+        OpeningCurlyBracket,
+        OpeningParenthesis,
+        OpeningSquareBracket,
+        Word
     }
 }

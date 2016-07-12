@@ -1,8 +1,7 @@
 ﻿using System;
 
-namespace Core.Lexicon
+namespace Core.Exceptions
 {
-    [Serializable]
     internal class UnknownTokenException : Exception
     {
         public UnknownTokenException(char c) : base($"Unknown token : {c}.")

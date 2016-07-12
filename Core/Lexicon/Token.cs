@@ -1,19 +1,25 @@
 ﻿namespace Core.Lexicon
 {
-    internal class Token<T> : AbstractToken
+    internal class Token
     {
-        public Token(TokenType type, T value) : base(type)
+        public Token(TokenType type, string value)
         {
             Value = value;
+            Type = type;
         }
 
-        public T Value { get; set; }
+        public Token(TokenType type, int value) : this(type, value.ToString())
+        {
 
-        public override string ToString() => $"{Type} {Value}";
+        }
+
+        public string Value { get; set; }
+
+        public TokenType Type { get; set; }
 
         public override bool Equals(object obj)
         {
-            Token<T> token = obj as Token<T>;
+            Token token = obj as Token;
             if (token == null) return false;
             return Value.Equals(token.Value) && Type.Equals(token.Type);
         }
@@ -22,5 +28,7 @@
         {
             return Value.GetHashCode() + 11 * Type.GetHashCode();
         }
+
+        public override string ToString() => $"{Type} {Value}";
     }
 }
