@@ -1,5 +1,7 @@
 # JSONC
 
+Exercise July 12, 2016
+
 A solution to parse JSON with comments (JSONC).
 
 
