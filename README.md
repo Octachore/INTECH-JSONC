@@ -2,14 +2,27 @@
 
 A solution to parse JSON with comments (JSONC).
 
-## Grammar
 
-The supported characters are letters, numbers, opening and closing brackets and parenthesis and double quotes.
+## Exercise objectives
 
-Comments are an exception. They start with // or /* and end with newline or */. Their content can be anything.
+Parse a subset of JSON (objects, arrays, strings and integers) with the addition of single-line and multi-line comments.
 
-The grammar currently supported is described in that file : [Grammar.txt](./Core/Lexicon/Grammar.txt)
+For example:
 
+```
+{
+    //Comment 1
+    a = 1,
+    b = [1, 2, 3], //Comment 2
+    c = {
+            /* Comment 3 on
+                several lines */
+            d = 1,
+            e = "Hello World"
+            // Comment 4
+        }
+}
+```
 
 ## The lexer
 
@@ -26,7 +39,7 @@ The goal it to produce an AST that represents the structure of the JSONC, where 
 
 Example:
 
-``` json
+```
 {
     // description for the following line
     a = 1,
@@ -44,3 +57,13 @@ Example:
 ## Unit tests
 
 The test cases data are provided by the **TestsData** class.
+
+They pass:
+
+![tests passing image](tests.png "The tests pass!")
+
+## Misc
+
+The AST produced by the parser can easily be rendered as JSON because the comments are not stored on specific nodes but as meta-data of the node representing the element they are related to.
+
+The JSON Visitor can just print the content of the nodes. Another visitor willing to take into account the comments will just have to access the *Comments* properties of the node.
