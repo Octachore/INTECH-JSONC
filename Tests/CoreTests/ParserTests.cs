@@ -8,7 +8,7 @@ namespace Tests.CoreTests
     {
         [Category("Playground")]
         [TestCaseSource(typeof(TestsData.Core.Parser.TreeCreationWithoutComments), "Data")]
-        public void Parser_can_creats_ast_from_json_without_comments(string input, Node expectedTree)
+        public void AST_from_json(string input, Node expectedTree)
         {
             var parser = new Parser(input);
             Node tree = parser.Parse();
@@ -18,7 +18,7 @@ namespace Tests.CoreTests
 
         [Category("Playground")]
         [TestCaseSource(typeof(TestsData.Core.Parser.TreeCreationWithComments), "Data")]
-        public void Parser_can_creats_ast_from_json_with_comments(string input, Node expectedTree)
+        public void AST_from_jsonc(int testCaseid, string input, Node expectedTree)
         {
             var parser = new Parser(input);
             Node tree = parser.Parse();

@@ -263,10 +263,72 @@ namespace Tests
                 {
                     public static object[] Data => new object[]
                     {
-                        new object[] {TestCase1.Json, TestCase1.Tree}
+                        new object[] {1, TestCase1.Json, TestCase1.Tree},
+                        new object[] {2, TestCase2.Json, TestCase2.Tree},
+                        new object[] {3, TestCase3.Json, TestCase3.Tree},
+                        new object[] {10000, TestCase10000.Json, TestCase10000.Tree}
                     };
 
                     private static class TestCase1
+                    {
+                        public const string Json = @"{ /* Comment */ a = 1 }";
+
+                        public static Node Tree
+                        {
+                            get
+                            {
+
+                                var propertyA = new AssignmentNode("a", new ValueNode<int>(1));
+                                propertyA.Comments.Add(" Comment ");
+
+                                var root = new ObjectNode(propertyA);
+                                return root;
+                            }
+                        }
+                    }
+
+                    private static class TestCase2
+                    {
+                        public const string Json = @"{
+                                                            // Comment
+                                                            a = 1
+                                                     }";
+
+                        public static Node Tree
+                        {
+                            get
+                            {
+
+                                var propertyA = new AssignmentNode("a", new ValueNode<int>(1));
+                                propertyA.Comments.Add(" Comment");
+
+                                var root = new ObjectNode(propertyA);
+                                return root;
+                            }
+                        }
+                    }
+
+                    private static class TestCase3
+                    {
+                        public const string Json = @"{
+                                                            a = 1 // Comment
+                                                     }";
+
+                        public static Node Tree
+                        {
+                            get
+                            {
+
+                                var propertyA = new AssignmentNode("a", new ValueNode<int>(1));
+                                propertyA.Comments.Add(" Comment");
+
+                                var root = new ObjectNode(propertyA);
+                                return root;
+                            }
+                        }
+                    }
+
+                    private static class TestCase10000
                     {
                         public const string Json = @"{
                                                         //Comment 1

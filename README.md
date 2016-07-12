@@ -42,3 +42,7 @@ Example:
         }
 }
 ```
+
+## Unit tests
+
+The test cases data are provided by the **TestsData** class.
