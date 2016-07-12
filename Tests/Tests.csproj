@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="CoreTests\LexerTests.cs" />
     <Compile Include="CoreTests\ParserTests.cs" />
+    <Compile Include="CoreTests\VisitorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestsData.cs" />
     <Compile Include="UtilsTests\ComparisonTests.cs" />

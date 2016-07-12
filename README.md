@@ -21,10 +21,8 @@ It handles format errors the same way as *int.Parse(...)* does: if a character i
 
 The goal it to produce an AST that represents the structure of the JSONC, where comments become meta-data to a node of the tree according to the following rules:
 
-- If a comment stands alone on its line(s):
-  - If the comment precedes another element: it becomes a meta-data of that element
-  - If the comment is at the end of a block: it becomes a meta-data for the block
-- If a comment is on the line of another element: it becomes a meta-data for that element
+- becomes meta-data for the following element
+- if there is no following element, becomes meta-data for the containing element
 
 Example:
 
@@ -32,7 +30,7 @@ Example:
 {
     // description for the following line
     a = 1,
-    b = [1, 2, 3], // description for that line
+    b = [1, 2, 3], // description for the following line
     c = {
             /* Long description
                 for the following line */

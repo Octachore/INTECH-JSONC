@@ -320,9 +320,9 @@ namespace Tests
                             {
 
                                 var propertyA = new AssignmentNode("a", new ValueNode<int>(1));
-                                propertyA.Comments.Add(" Comment");
 
                                 var root = new ObjectNode(propertyA);
+                                root.Comments.Add(" Comment");
                                 return root;
                             }
                         }
@@ -357,7 +357,6 @@ namespace Tests
                                 listB.Values.Add(new ValueNode<int>(3));
 
                                 var propertyB = new AssignmentNode("b", listB);
-                                propertyB.Comments.Add("Comment 2");
 
                                 var propertyD = new AssignmentNode("d", new ValueNode<int>(1));
                                 propertyD.Comments.Add(@" Comment 3 on
@@ -366,14 +365,62 @@ namespace Tests
                                 var propertyE = new AssignmentNode("e", new ValueNode<string>("Hello World"));
 
                                 var objectC = new ObjectNode(propertyD, propertyE);
+                                objectC.Comments.Add("Comment 4");
 
                                 var propertyC = new AssignmentNode("c", objectC);
-                                propertyC.Comments.Add("Comment 4");
+                                propertyC.Comments.Add("Comment 2");
 
                                 var root = new ObjectNode(propertyA, propertyB, propertyC);
                                 return root;
                             }
                         }
+                    }
+                }
+            }
+
+            public class Visitor
+            {
+                public class JsonVisitor
+                {
+                    public static object[] Data => new object[]
+                    {
+                        new object[] {TestCase1.Tree, TestCase1.ExpectedResult}
+                    };
+
+                    private static class TestCase1
+                    {
+                        public static Node Tree
+                        {
+                            get
+                            {
+                                var propertyA = new AssignmentNode("a", new ValueNode<int>(1));
+                                propertyA.Comments.Add("Comment 1");
+
+                                var listB = new ListNode();
+                                listB.Values.Add(new ValueNode<int>(1));
+                                listB.Values.Add(new ValueNode<int>(2));
+                                listB.Values.Add(new ValueNode<int>(3));
+
+                                var propertyB = new AssignmentNode("b", listB);
+
+                                var propertyD = new AssignmentNode("d", new ValueNode<int>(1));
+                                propertyD.Comments.Add(@" Comment 3 on
+                                                                    several lines ");
+
+                                var propertyE = new AssignmentNode("e", new ValueNode<string>("Hello World"));
+
+                                var objectC = new ObjectNode(propertyD, propertyE);
+                                objectC.Comments.Add("Comment 4");
+
+                                var propertyC = new AssignmentNode("c", objectC);
+                                propertyC.Comments.Add("Comment 2");
+
+                                var root = new ObjectNode(propertyA, propertyB, propertyC);
+                                return root;
+                            }
+                        }
+
+                        public const string ExpectedResult = "{ a = 1 ,b = [ 1 ,2 ,3 ] ,c = { d = 1 ,e = Hello World } }";
                     }
                 }
             }
